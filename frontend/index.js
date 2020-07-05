@@ -2,6 +2,8 @@ import {
 	initializeBlock,
 	useBase,
 	useRecords,
+	expandRecord,
+	TextButton,
 } from '@airtable/blocks/ui';
 import React from 'react';
 
@@ -22,6 +24,13 @@ function Task({record}) {
 	return (
 		<div>
 			{record.name || 'Unnamed record'}
+			<TextButton
+				icon="expand"
+				aria-label="Expand record"
+				onClick={() => {
+					expandRecord(record);
+				}}
+			/>
 		</div>
 	);	
 }
