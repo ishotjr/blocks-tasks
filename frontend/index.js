@@ -12,14 +12,18 @@ function TasksBlock() {
 	const records = useRecords(table);
 
 	const tasks = records.map(record => {
-		return (
-			<div key={record.id}>
-				{record.name || 'Unnamed record'}
-			</div>
-		);
+		return <Task key={record.id} record={record} />;
 	})
 
     return <div>{tasks}</div>;
+}
+
+function Task({record}) {
+	return (
+		<div>
+			{record.name || 'Unnamed record'}
+		</div>
+	);	
 }
 
 initializeBlock(() => <TasksBlock />);
