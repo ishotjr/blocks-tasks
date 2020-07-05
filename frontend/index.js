@@ -1,9 +1,17 @@
-import {initializeBlock} from '@airtable/blocks/ui';
+import {
+	initializeBlock,
+	useBase,
+	useRecords,
+} from '@airtable/blocks/ui';
 import React from 'react';
 
-function HelloWorldBlock() {
-    // YOUR CODE GOES HERE
-    return <div>Tasks</div>;
+function TasksBlock() {
+	const base = useBase();
+	const table = base.getTableByName('Tasks');
+
+	const records = useRecords(table);
+
+    return <div>Tasks: {records.length}</div>;
 }
 
-initializeBlock(() => <HelloWorldBlock />);
+initializeBlock(() => <TasksBlock />);
