@@ -20,10 +20,16 @@ function TasksBlock() {
 	const table = base.getTableByIdIfExists(tableId);
 	const completedField = table ? table.getFieldByIdIfExists(completedFieldId) : null;
 
+	const toggle = (record) => {
+		table.updateRecordAsync(
+			record, {[completedFieldId]: !record.getCellValue(completedFieldId)}
+		);
+	};
+
 	const records = useRecords(table);
 
 	const tasks = records && completedFieldId ? records.map(record => (
-		<Task key={record.id} record={record} completedFieldId={completedFieldId} />
+		<Task key={record.id} record={record} onToggle={toggle} completedFieldId={completedFieldId} />
 	)) : null;
 
     return (
@@ -35,7 +41,7 @@ function TasksBlock() {
 	);
 }
 
-function Task({record, completedFieldId}) {
+function Task({record, completedFieldId, onToggle}) {
 	const label = record.name || 'Unnamed record';
 
 	return (
@@ -49,7 +55,15 @@ function Task({record, completedFieldId}) {
 				borderBottom: '1px solid #ddd',
 			}}
 		>
-			{record.getCellValue(completedFieldId) ? <s>{label}</s> : label}
+			<TextButton
+				variant="dark"
+				size="xlarge"
+				onClick={() => {
+					onToggle(record);
+				}}
+			>
+				{record.getCellValue(completedFieldId) ? <s>{label}</s> : label}
+			</TextButton>
 			<TextButton
 				icon="expand"
 				aria-label="Expand record"
