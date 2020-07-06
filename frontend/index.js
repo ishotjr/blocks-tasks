@@ -2,16 +2,18 @@ import {
 	initializeBlock,
 	useBase,
 	useRecords,
+	useGlobalConfig,
 	expandRecord,
-	TablePicker,
+	TablePickerSynced,
 	TextButton,
 } from '@airtable/blocks/ui';
-import React, {useState} from 'react';
+import React from 'react';
 
 function TasksBlock() {
 	const base = useBase();
 
-	const [tableId, setTableId] = useState(null);
+	const globalConfig = useGlobalConfig();
+	const tableId = globalConfig.get('selectedTableId');
 
 	const table = base.getTableByIdIfExists(tableId);
 
@@ -23,12 +25,7 @@ function TasksBlock() {
 
     return (
 		<div>
-			<TablePicker
-				table={table}
-				onChange={newTable => {
-					setTableId(newTable.id);
-				}}
-			/>
+			<TablePickerSynced globalConfigKey="selectedTableId" />
 			{tasks}
 		</div>
 	);
